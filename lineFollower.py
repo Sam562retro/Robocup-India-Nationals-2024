@@ -66,7 +66,7 @@ while True:
 		
 		print(angles, speed)
 		if(len(angles) > 1):
-			sleep(0.5)
+			sleep(0.8)
 			
 		print("----------------------")
 		
