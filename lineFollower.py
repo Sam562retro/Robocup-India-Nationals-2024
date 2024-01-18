@@ -3,6 +3,7 @@ from picamera2 import Picamera2
 import numpy as np
 from itertools import groupby
 import math
+from time import sleep
 #----------------------------------------
 
 def runs(difference):
@@ -21,8 +22,7 @@ picam2 = Picamera2()
 picam2.start()
 while True:
 	image = picam2.capture_array()
-
-	greyFrame = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+	greyFrame = image
 
 	edges = cv2.Canny(greyFrame,50,150,apertureSize = 3)
 	lines = cv2.HoughLines(edges,1,np.pi/180,200)
@@ -61,13 +61,16 @@ while True:
 		since we will have more angkes, smoother the turn. Maybe pick the rightmost and left most angles
 		'''
 		
-		speed = 100 - 0.76*abs(abs(angles[-1]) - abs(angles[0]))
+		speed = 100 - 0.66*abs(angles[-1] - angles[0])
 		
 		
 		print(angles, speed)
+		if(len(angles) > 1):
+			sleep(0.5)
+			
 		print("----------------------")
 		
-	cv2.imshow("Frame", greyFrame)
+	cv2.imshow("Frame", image)
 
 	if(cv2.waitKey(1) == ord("q")):
 	  break
